@@ -1,6 +1,5 @@
-from grid import Grid
-from agent import Agent
+from game import Game
 
 if __name__ == '__main__':
-    grid = Grid()
-    grid.print_grid()
+    game = Game()
+    game.draw_grid()

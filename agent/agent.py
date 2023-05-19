@@ -1,5 +1,9 @@
+from turtle import Turtle
+from grid.cell import Cell
+
+
 class Agent:
-    def __init__(self):
+    def __init__(self) -> None:
         self.arrow = 2
         self.x = 1
         self.y = 1
@@ -7,7 +11,23 @@ class Agent:
         self.gold = False
         self.dead = False
         self.path = [(1, 1)]
-        self.grid_state = []
+        self.grid_state = [[Cell() for _ in range(6)] for _ in range(6)]
+        # agent has no information about the grid at the start except for 1,1
+        for i in range(6):
+            for j in range(6):
+                self.grid_state[i][j].safe = False
+                self.grid_state[i][j].visited = False
+                self.grid_state[i][j].pit = False
+                self.grid_state[i][j].wumpus = False
+                self.grid_state[i][j].breeze = False
+                self.grid_state[i][j].stench = False
+                self.grid_state[i][j].agent = False
+                self.grid_state[i][j].gold = False
+                self.grid_state[i][j].glitter = False
+                self.grid_state[i][j].bump = False
+                self.grid_state[i][j].scream = False
+        self.grid_state[1][1].agent = True
+        self.turtle = Turtle()
 
     def process_percepts(self, percepts) -> None:
         """
@@ -21,6 +41,13 @@ class Agent:
         에이전트는 이 메소드를 통해 다음 행동을 결정합니다.
         """
         # 행동 결정 로직 구현
+        pass
+
+    def action(self, action) -> None:
+        """
+        에이전트는 이 메소드를 통해 행동을 수행합니다.
+        """
+        # 행동 수행 로직 구현
         pass
 
     def restart(self) -> None:
@@ -72,3 +99,25 @@ class Agent:
 
     def grab(self) -> None:
         pass
+
+    def find_path(self, x: int, y: int) -> list:
+        # BFS
+        queue = [(self.x, self.y)]
+        visited = set()
+        path = []
+        while queue:
+            x, y = queue.pop(0)
+            if (x, y) == (x, y):
+                break
+            if (x, y) not in visited and self.grid_state[x][y].safe:
+                visited.add((x, y))
+                path.append((x, y))
+                if x > 1:
+                    queue.append((x - 1, y))
+                if x < 5:
+                    queue.append((x + 1, y))
+                if y > 1:
+                    queue.append((x, y - 1))
+                if y < 5:
+                    queue.append((x, y + 1))
+        return path

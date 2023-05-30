@@ -10,24 +10,9 @@ class Agent:
         self.direction = "east"
         self.gold = False
         self.dead = False
-        self.path = [(1, 1)]
+        self.path = [[1, 1]]
         self.grid_state = [[Cell() for _ in range(6)] for _ in range(6)]
-        # agent has no information about the grid at the start except for 1,1
-        for i in range(6):
-            for j in range(6):
-                self.grid_state[i][j].safe = False
-                self.grid_state[i][j].visited = False
-                self.grid_state[i][j].pit = False
-                self.grid_state[i][j].wumpus = False
-                self.grid_state[i][j].breeze = False
-                self.grid_state[i][j].stench = False
-                self.grid_state[i][j].agent = False
-                self.grid_state[i][j].gold = False
-                self.grid_state[i][j].glitter = False
-                self.grid_state[i][j].bump = False
-                self.grid_state[i][j].scream = False
         self.grid_state[1][1].agent = True
-        self.turtle = Turtle()
 
     def process_percepts(self, percepts) -> None:
         """
@@ -72,7 +57,7 @@ class Agent:
         elif self.direction == "south":
             self.y -= 1
 
-        self.path.append((self.x, self.y))
+        self.path.append([self.x, self.y])
 
     def turn_left(self) -> None:
         if self.direction == "east":

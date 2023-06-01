@@ -18,3 +18,6 @@ class Grid:
             for cell in row:
                 print(cell.__dict__)
             print()
+    
+    def get_sensor_input(self, x: int, y: int) -> list:
+        return self.grid[x][y].get_sensor_input()

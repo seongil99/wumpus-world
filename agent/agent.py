@@ -4,10 +4,14 @@ from grid.cell import Cell
 
 class Agent:
     def __init__(self) -> None:
+        self.EAST = 0
+        self.NORTH = 1
+        self.WEST = 2
+        self.SOUTH = 3
         self.arrow = 2
         self.x = 1
         self.y = 1
-        self.direction = "east"
+        self.direction = self.EAST
         self.gold = False
         self.dead = False
         self.path = [[1, 1]]
@@ -39,7 +43,7 @@ class Agent:
         self.arrow = 2
         self.x = 1
         self.y = 1
-        self.direction = "east"
+        self.direction = self.EAST
         self.gold = False
         self.dead = False
         self.path = []
@@ -48,36 +52,36 @@ class Agent:
         self.arrow -= 1
 
     def move(self) -> None:
-        if self.direction == "east":
+        if self.direction == self.EAST:
             self.x += 1
-        elif self.direction == "west":
+        elif self.direction == self.WEST:
             self.x -= 1
-        elif self.direction == "north":
+        elif self.direction == self.NORTH:
             self.y += 1
-        elif self.direction == "south":
+        elif self.direction == self.SOUTH:
             self.y -= 1
 
         self.path.append([self.x, self.y])
 
     def turn_left(self) -> None:
-        if self.direction == "east":
-            self.direction = "north"
-        elif self.direction == "west":
-            self.direction = "south"
-        elif self.direction == "north":
-            self.direction = "west"
-        elif self.direction == "south":
-            self.direction = "east"
+        if self.direction == self.EAST:
+            self.direction = self.NORTH
+        elif self.direction == self.WEST:
+            self.direction = self.SOUTH
+        elif self.direction == self.NORTH:
+            self.direction = self.WEST
+        elif self.direction == self.SOUTH:
+            self.direction = self.EAST
 
     def turn_right(self) -> None:
-        if self.direction == "east":
-            self.direction = "south"
-        elif self.direction == "west":
-            self.direction = "north"
-        elif self.direction == "north":
-            self.direction = "east"
-        elif self.direction == "south":
-            self.direction = "west"
+        if self.direction == self.EAST:
+            self.direction = self.SOUTH
+        elif self.direction == self.WEST:
+            self.direction = self.NORTH
+        elif self.direction == self.NORTH:
+            self.direction = self.EAST
+        elif self.direction == self.SOUTH:
+            self.direction = self.WEST
 
     def climb(self) -> None:
         pass
@@ -90,19 +94,5 @@ class Agent:
         queue = [(self.x, self.y)]
         visited = set()
         path = []
-        while queue:
-            x, y = queue.pop(0)
-            if (x, y) == (x, y):
-                break
-            if (x, y) not in visited and self.grid_state[x][y].safe:
-                visited.add((x, y))
-                path.append((x, y))
-                if x > 1:
-                    queue.append((x - 1, y))
-                if x < 5:
-                    queue.append((x + 1, y))
-                if y > 1:
-                    queue.append((x, y - 1))
-                if y < 5:
-                    queue.append((x, y + 1))
+        
         return path

@@ -1,4 +1,3 @@
-from turtle import Turtle
 from grid.cell import Cell
 
 
@@ -15,7 +14,6 @@ class Agent:
         self.gold = False
         self.dead = False
         self.grid_state = [[Cell() for _ in range(6)] for _ in range(6)]
-        self.grid_state[1][1].agent = True
 
     def process_percepts(self, percepts) -> None:
         """

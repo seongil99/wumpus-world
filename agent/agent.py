@@ -14,7 +14,6 @@ class Agent:
         self.direction = self.EAST
         self.gold = False
         self.dead = False
-        self.path = [[1, 1]]
         self.grid_state = [[Cell() for _ in range(6)] for _ in range(6)]
         self.grid_state[1][1].agent = True
 

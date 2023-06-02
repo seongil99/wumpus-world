@@ -5,10 +5,6 @@ from .cell import Cell
 class Grid:
     def __init__(self) -> None:
         self.grid = [[Cell() for _ in range(6)] for _ in range(6)]
-        # 1,1 is the starting point and is always safe
-        self.grid[1][1].pit = False
-        self.grid[1][1].wumpus = False
-        self.grid[1][1].agent = True
         # wumpus and pit are randomly placed in the grid 1 <= x <= 4 and 1 <= y <= 4 (not in 1,1)
         # percent chance of pit and wumpus is 10%
         for x in range(1, 5):
@@ -33,11 +29,13 @@ class Grid:
         for x in range(1, 5):
             for y in range(1, 5):
                 if self.grid[x][y].pit:
+                    self.grid[x][y].breeze = True
                     self.grid[x-1][y].breeze = True
                     self.grid[x+1][y].breeze = True
                     self.grid[x][y-1].breeze = True
                     self.grid[x][y+1].breeze = True
                 if self.grid[x][y].wumpus:
+                    self.grid[x][y].stench = True
                     self.grid[x-1][y].stench = True
                     self.grid[x+1][y].stench = True
                     self.grid[x][y-1].stench = True
@@ -46,7 +44,7 @@ class Grid:
     def get_cell(self, x: int, y: int) -> Cell:
         return self.grid[x][y]
 
-    def print_grid(self) -> None:
+    def print_all_grid(self) -> None:
         for row in self.grid:
             for cell in row:
                 if cell.agent:
@@ -59,6 +57,10 @@ class Grid:
                     print('G', end=' ')
                 else:
                     print('-', end=' ')
+            print()
+        for i in range(1, 5):
+            for j in range(1, 5):
+                print("{}, {} sensor input: {} ".format(i, j, self.get_sensor_input(i, j)))
             print()
     
     def get_sensor_input(self, x: int, y: int) -> list:

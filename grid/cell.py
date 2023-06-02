@@ -1,12 +1,7 @@
-from turtle import Turtle
-
+from const import *
 
 class Cell:
     def __init__(self) -> None:
-        self.SAFE = 0
-        self.DANGER = 1
-        self.UNKNOWN = 2
-
         self.wumpus = False
         self.pit = False
         self.stench = False
@@ -17,7 +12,7 @@ class Cell:
         self.bump = False
         self.scream = False
         self.visited = False
-        self.status = self.UNKNOWN
+        self.status = UNKNOWN
 
     def kill_wumpus(self) -> None:
         self.wumpus = False

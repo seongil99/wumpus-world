@@ -1,5 +1,5 @@
 from const import *
-from grid.cell import Cell
+from grid import Cell
 
 
 class Agent:
@@ -36,7 +36,7 @@ class Agent:
         self.arrow = 2
         self.x = 1
         self.y = 1
-        self.direction = self.EAST
+        self.direction = EAST
         self.gold = False
         self.dead = False
         self.path = []
@@ -53,8 +53,6 @@ class Agent:
             self.y += 1
         elif self.direction == SOUTH:
             self.y -= 1
-
-        self.path.append([self.x, self.y])
 
     def turn_left(self) -> None:
         if self.direction == EAST:

@@ -25,7 +25,9 @@ agent = Agent()
 grid = Grid()
 
 if __name__ == '__main__':
-    game = Game()
-    game.root.after(100, lambda: game.move_agent(2, 1))  # Start the animation 100 ms after the mainloop starts
-    game.root.mainloop()  # Start the mainloop
+    # game = Game()
+    # game.root.after(100, lambda: game.move_agent(2, 1))  # Start the animation 100 ms after the mainloop starts
+    # game.root.mainloop()  # Start the mainloop
+    grid = Grid()
+    grid.print_grid()
 

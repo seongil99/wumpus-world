@@ -1,35 +1,55 @@
 from const import *
 from grid import Cell
+from kb import *
 
 
 class Agent:
     def __init__(self) -> None:
         self.x = 1
         self.y = 1
+        self.arrow = 2
+        self.t = 0
         self.direction = EAST
         self.gold = False
         self.dead = False
-        self.grid_state = [[Cell() for _ in range(6)] for _ in range(6)]
+        self.kb = WumpusKB()
+        self.actions = {
+            "go_forward": False,
+            "turn_left": False,
+            "turn_right": False,
+            "grab": False,
+            "shoot": False,
+            "climb": False,
+        }
+        self.path = []
+        self.action_sequence = []
+        self.visited = set()
+        self.plan = []
 
-    def process_percepts(self, percepts) -> None:
-        """
-        에이전트는 이 메소드를 통해 주어진 센서 입력을 처리합니다.
-        """
-        # 센서 입력 처리 로직 구현
-        pass
+    def visit(self, x: int, y: int) -> None:
+        self.visited.add((x, y))
+        self.path.append((x, y))
+        self.t += 1
 
-    def decide_action(self) -> None:
-        """
-        에이전트는 이 메소드를 통해 다음 행동을 결정합니다.
-        """
-        # 행동 결정 로직 구현
-        pass
+    def perceive(self, sensor_input: dict) -> None:
+        self.kb.tell(expr(f"~P{self.x}{self.y}"))
+        self.kb.tell(expr(f"~W{self.x}{self.y}"))
+        if sensor_input.get("stench") is True:
+            self.kb.tell(expr(f"S{self.x}{self.y}"))
+        elif sensor_input.get("stench") is False:
+            self.kb.tell(expr(f"~S{self.x}{self.y}"))
+        if sensor_input.get("breeze") is True:
+            self.kb.tell(expr(f"B{self.x}{self.y}"))
+        elif sensor_input.get("breeze") is False:
+            self.kb.tell(expr(f"~B{self.x}{self.y}"))
+        if sensor_input.get("glitter") is True:
+            self.kb.tell(expr(f"G{self.x}{self.y}"))
+        # print(f"{self.x},{self.y} : {sensor_input}")
 
-    def action(self, action) -> None:
-        """
-        에이전트는 이 메소드를 통해 행동을 수행합니다.
-        """
-        # 행동 수행 로직 구현
+    def reasoning(self) -> None:
+        result = self.kb.dpll_satisfiable()
+
+    def action(self) -> None:
         pass
 
     def restart(self) -> None:
@@ -39,7 +59,6 @@ class Agent:
         self.direction = EAST
         self.gold = False
         self.dead = False
-        self.path = []
 
     def shoot(self) -> None:
         self.arrow -= 1
@@ -53,6 +72,10 @@ class Agent:
             self.y += 1
         elif self.direction == SOUTH:
             self.y -= 1
+
+    def move(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
 
     def turn_left(self) -> None:
         if self.direction == EAST:
@@ -80,22 +103,31 @@ class Agent:
     def grab(self) -> None:
         pass
 
-    def find_path(self, x: int, y: int) -> list:
-        # BFS
-        queue = [(self.x, self.y)]
-        visited = set()
-        path = []
-        
-        return path
-    
-    def get_sensor_input(self, sensor_input: list) -> None:
-        if sensor_input[0]:
-            self.grid_state[self.x][self.y].stench = True
-        if sensor_input[1]:
-            self.grid_state[self.x][self.y].breeze = True
-        if sensor_input[2]:
-            self.grid_state[self.x][self.y].glitter = True
-        if sensor_input[3]:
-            self.grid_state[self.x][self.y].bump = True
-        if sensor_input[4]:
-            self.grid_state[self.x][self.y].scream = True
+    def die(self, reason: str) -> None:
+        if reason == "wumpus":
+            self.kb.tell(expr(f"W{self.x}{self.y}"))
+        elif reason == "pit":
+            self.kb.tell(expr(f"P{self.x}{self.y}"))
+        self.dead = True
+        self.t = 0
+
+    def find_safe_path(self) -> list:
+        ret = []
+        return ret
+
+    def print_kb_grid_state(self) -> None:
+        for x in range(1, 5):
+            for y in range(1, 5):
+                result = self.kb.dpll_satisfiable()
+                if result is False:
+                    print("unsatisfiable")
+                    return
+                elif result is True or result.get(expr(f"P{x}{y}")) is True:
+                    print("P", end=" ")
+                elif result is True or result.get(expr(f"W{x}{y}")) is True:
+                    print("W", end=" ")
+                elif result is True or result.get(expr(f"G{x}{y}")) is True:
+                    print("G", end=" ")
+                else:
+                    print("-", end=" ")
+            print()

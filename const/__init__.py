@@ -1,16 +1,20 @@
 __all__ = [
-    'SAFE',
-    'DANGER',
-    'UNKNOWN',
-    'EAST',
-    'NORTH',
-    'WEST',
-    'SOUTH'
+    "SAFE",
+    "WUMPUS",
+    "PIT",
+    "UNKNOWN",
+    "POSSIBLE",
+    "EAST",
+    "NORTH",
+    "WEST",
+    "SOUTH",
 ]
 
 SAFE = 0
-DANGER = 1
-UNKNOWN = 2
+WUMPUS = 1
+PIT = 2
+UNKNOWN = 3
+POSSIBLE = 4
 
 EAST = 0
 NORTH = 1

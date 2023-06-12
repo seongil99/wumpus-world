@@ -1,16 +1,17 @@
 import tkinter as tk
 
+
 class Application(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title("Moving Ball")
-        
+
         # Canvas where the ball will be drawn and moved
         self.canvas = tk.Canvas(self, width=600, height=400, bg="white")
         self.canvas.pack()
 
         # Draw a red ball
-        self.ball = self.canvas.create_oval(50, 50, 100, 100, fill='red')
+        self.ball = self.canvas.create_oval(50, 50, 100, 100, fill="red")
 
         # Create a "Move" button
         self.move_button = tk.Button(self, text="Move", command=self.move_ball)

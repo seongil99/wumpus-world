@@ -49,6 +49,12 @@ class Grid:
     def get_cell(self, x: int, y: int) -> Cell:
         return self.grid[x][y]
 
+    def grab_gold(self) -> None:
+        for x in range(1, 5):
+            for y in range(1, 5):
+                self.grid[x][y].glitter = False
+                self.grid[x][y].gold = False
+
     def print_all_grid(self) -> None:
         for x in range(1, 5):
             for y in range(1, 5):

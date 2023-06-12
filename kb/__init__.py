@@ -8,4 +8,5 @@ __all__ = [
     "PropKB",
     "adjust_coords",
     "WumpusKB",
+    "next_coords",
 ]

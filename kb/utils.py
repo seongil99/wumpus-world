@@ -1,4 +1,5 @@
 import collections
+from const import *
 
 
 class Expr:
@@ -259,3 +260,16 @@ def adjust_coords(x: int, y: int) -> list[tuple[int, int]]:
     if y < 4:
         adj.append((x, y + 1))
     return adj
+
+
+def next_coords(x: int, y: int, direction: int) -> tuple[int, int] | tuple[None, None]:
+    if direction == EAST and y < 4:
+        return (x, y + 1)
+    elif direction == WEST and y > 1:
+        return (x, y - 1)
+    elif direction == NORTH and x < 4:
+        return (x + 1, y)
+    elif direction == SOUTH and x > 1:
+        return (x - 1, y)
+    else:
+        return (None, None)

@@ -99,7 +99,7 @@ def print_all_grid(self) -> None:
         print()
 
 
-def main():
+def test_time():
     # game = Game()
     # game.root.after(100, lambda: game.move_agent(2, 1))  # Start the animation 100 ms after the mainloop starts
     # game.root.mainloop()  # Start the mainloop
@@ -131,6 +131,45 @@ def main():
     print(str(result_time) + " sec")
 
 
+def test_find_safe_path():
+    start = time.time()
+
+    grid = Grid()
+    agent = Agent()
+    grid.print_all_grid()
+    print()
+    while True:
+        print(f"time: {agent.t}")
+        agent.visit(agent.x, agent.y)
+        if grid.get_cell(agent.x, agent.y).wumpus:
+            agent.die("wumpus")
+            print("dead by wumpus")
+            agent.restart()
+        elif grid.get_cell(agent.x, agent.y).pit:
+            agent.die("pit")
+            print("dead by pit")
+            agent.restart()
+        else:
+            agent.perceive(grid.get_sensor_input(agent.x, agent.y))
+            agent.print_kb_grid_state()
+            agent.reasoning()
+            action = agent.action()
+            if action == "grab":
+                grid.grab_gold()
+        if agent.win is True:
+            print("WIN!")
+            break
+
+    end = time.time()
+    sec = end - start
+    result_time = datetime.timedelta(seconds=sec)
+    print(str(result_time) + " sec")
+
+
 if __name__ == "__main__":
-    for i in range(10):
-        main()
+    for i in range(20):
+        print(f"=======test {i}=======")
+        try:
+            test_find_safe_path()
+        except Exception as e:
+            print(e)

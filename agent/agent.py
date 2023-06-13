@@ -53,6 +53,9 @@ class Agent:
         if sensor_input.get("glitter") is True:
             self.gold_here = True
             print(f"glitter", end=" ")
+        if sensor_input.get("bump") is True:
+            self.bump = True
+            print(f"bump", end=" ")
         print()
         # print(f"{self.x},{self.y} : {sensor_input}")
 
@@ -318,23 +321,27 @@ class Agent:
                 if result is False:
                     print("unsatisfiable", end=" ")
                 elif self.x == x and self.y == y:
-                    print("A", end=" ")
+                    print("A ", end=" ")
                 elif (
                     (x + 1, y) not in self.visited
                     and (x - 1, y) not in self.visited
                     and (x, y + 1) not in self.visited
                     and (x, y - 1) not in self.visited
                 ):
-                    print("?", end=" ")
+                    print("? ", end=" ")
                 elif isinstance(result, dict):
-                    if result.get(expr(f"P{x}{y}")):
-                        print("P", end=" ")
-                    elif result.get(expr(f"W{x}{y}")):
-                        print("W", end=" ")
-                    elif result.get(expr(f"G{x}{y}")):
-                        print("G", end=" ")
+                    if result.get(expr(f"P{x}{y}")) and (x, y) in self.visited:
+                        print("P ", end=" ")
+                    elif result.get(expr(f"P{x}{y}")) and (x, y) not in self.visited:
+                        print("P?", end=" ")
+                    elif result.get(expr(f"W{x}{y}")) and (x, y) in self.visited:
+                        print("W ", end=" ")
+                    elif result.get(expr(f"W{x}{y}")) and (x, y) not in self.visited:
+                        print("W?", end=" ")
+                    elif result.get(expr(f"G{x}{y}")) and (x, y) in self.visited:
+                        print("G" , end=" ")
                     else:
-                        print("-", end=" ")
+                        print("- ", end=" ")
                 else:
                     print("-", end=" ")
             print()
